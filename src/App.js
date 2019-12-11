@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import {Menu} from "semantic-ui-react"
 import Dashboard from "./components/Dashboard";
+import AssignmentDetails from "./components/assignment_details.";
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
           </Route>
           <Route path="/dashboard">
             <Dashboard />
+          </Route>
+          <Route path="/assignment_details">
+            <AssignmentDetails />
           </Route>
           <Route path="/">
             <Login />

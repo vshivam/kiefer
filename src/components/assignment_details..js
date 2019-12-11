@@ -19,12 +19,27 @@ import {
 } from "semantic-ui-react";
 
 class AssignmentDetails extends React.Component {
+  state = {
+    submissions: []
+  };
 
-    state = {
-        
-    }
+  getSubmissions = () => {};
 
-    getSubmissions = () => {
+  onCreateSubmission = () => {};
 
-    }
+  render = () => {
+    return (
+      <Form onSubmit={this.onCreateSubmission}>
+        <Header>{this.props.assignment.header}</Header>
+        <Form.Field>
+          <label>Give it your best shot!</label>
+          <TextArea name="submission_text" />
+        </Form.Field>
+        <Label> {this.props.assignment.keywords}</Label>
+        <Form.Button type="submit"> </Form.Button>
+      </Form>
+    );
+  };
 }
+
+export default AssignmentDetails; 

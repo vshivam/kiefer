@@ -41,7 +41,7 @@ class Dashboard extends React.Component {
   getActiveAssignmentsRequest = () => {
     return Axios({
       method: "get",
-      url: "http://127.0.0.1:8000" + "/user/assigments",
+      url: "http://127.0.0.1:8000" + "/user/assignments",
       withCredentials: true
     });
   };
@@ -82,18 +82,21 @@ class Dashboard extends React.Component {
   renderAssignment = assignment => {
     return (
       <Grid.Column width={8}>
-        <Card style={{ marginTop: "16px" }}>
-          <Card.Content>
-            <Card.Header>{assignment.header}</Card.Header>
-          </Card.Content>
-          <Card.Content>
-            1 <Icon name="star outline" color="yellow" size="large" />
-            2 <Icon name="handshake outline" color="blue" size="large" />
-            1 <Icon name="hand peace outline" color="purple" size="large" />
-          </Card.Content>
-          <Card.Content extra> {assignment.deadline}</Card.Content>
-          <Card.Content extra> {assignment.submission}</Card.Content>
-        </Card>
+        <Link>
+          <Card style={{ marginTop: "16px" }}>
+            <Card.Content>
+              <Card.Header>{assignment.header}</Card.Header>
+            </Card.Content>
+            <Card.Content>
+              1 <Icon name="star outline" color="yellow" size="large" />
+              2 <Icon name="handshake outline" color="blue" size="large" />
+              1 <Icon name="hand peace outline" color="purple" size="large" />
+            </Card.Content>
+            <Card.Content extra> {assignment.deadline}</Card.Content>
+            <Card.Content extra> {assignment.submission}</Card.Content>
+          </Card>
+        </Link>
+       
       </Grid.Column>
     );
   };
