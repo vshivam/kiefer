@@ -2,6 +2,7 @@ import React from "react";
 import Axios from "axios";
 
 import { Form, Label, Message } from "semantic-ui-react";
+import { withRouter } from "react-router";
 
 class Login extends React.Component {
   state = { error:false, email: "", password: "", submittedName: "", submittedEmail: "" };
@@ -27,7 +28,7 @@ class Login extends React.Component {
             email: email,
             password: password,
         },
-        url: "127.0.0.1:8000" + "/user/login",
+        url: "http://127.0.0.1:8000" + "/user/login",
         withCredentials: true
     })
   }
@@ -35,21 +36,21 @@ class Login extends React.Component {
   render() {
     return (
       <Form error={this.state.error} onSubmit={this.handleSubmit}>
-          <Form.Group>
           <Form.Field>
-          <Label> email address</Label>
+          <label> email address</label>
           <Form.Input onChange={this.handleChange} name="email" placeholder="email address" />
         </Form.Field>
         <Form.Field>
-          <Label> password</Label>
+          <label> password</label>
           <Form.Input onChange={this.handleChange} name="password" placeholder="password" />
         </Form.Field>
         <Message error> incorrect password</Message>
         <Form.Button type="submit"> login</Form.Button>
-          </Form.Group>
       </Form>
     );
   }
 }
+
+Login = withRouter(Login)
 
 export default Login;
