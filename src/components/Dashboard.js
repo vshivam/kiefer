@@ -18,6 +18,9 @@ import {
   Card
 } from "semantic-ui-react";
 
+
+import {Link } from "react-router-dom"
+
 class Dashboard extends React.Component {
   state = {
     assignments: [
@@ -82,7 +85,9 @@ class Dashboard extends React.Component {
   renderAssignment = assignment => {
     return (
       <Grid.Column width={8}>
-        <Link>
+        <Link to={{pathname: "/assignment_details", aboutProps: {
+          assignment: assignment
+        }}}>
           <Card style={{ marginTop: "16px" }}>
             <Card.Content>
               <Card.Header>{assignment.header}</Card.Header>
@@ -96,7 +101,6 @@ class Dashboard extends React.Component {
             <Card.Content extra> {assignment.submission}</Card.Content>
           </Card>
         </Link>
-       
       </Grid.Column>
     );
   };
