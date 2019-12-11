@@ -22,30 +22,19 @@ class Dashboard extends React.Component {
   state = {
     assignments: [
       {
-        heading: "Write about your trip to England",
-        tag: "",
-        day: "",
-        dos: ""
-      },
-      {
-        heading: "Write about your trip to England",
-        text: "",
-        doc: "",
-        dos: ""
-      },
-      {
-        heading: "Write about your trip to England",
-        text: "",
-        doc: "",
-        dos: ""
+        header: "Write about your trip to England",
+        keyword: "afrikanische",
+        deadline: "123",
       }
     ]
   };
 
   componentDidMount = () => {
     this.getActiveAssignmentsRequest().then(result => {
-      console.log(result.data);
-      console.log(this.state);
+      // header, mongoid, keyword, created, deadline, submission 
+      this.setState({
+        assignments: result.data.assignments
+      })
     });
   };
 
@@ -95,14 +84,15 @@ class Dashboard extends React.Component {
       <Grid.Column width={8}>
         <Card style={{ marginTop: "16px" }}>
           <Card.Content>
-            <Card.Header>{assignment.heading}</Card.Header>
+            <Card.Header>{assignment.header}</Card.Header>
           </Card.Content>
           <Card.Content>
             1 <Icon name="star outline" color="yellow" size="large" />
             2 <Icon name="handshake outline" color="blue" size="large" />
             1 <Icon name="hand peace outline" color="purple" size="large" />
           </Card.Content>
-          <Card.Content extra> {assignment.day}</Card.Content>
+          <Card.Content extra> {assignment.deadline}</Card.Content>
+          <Card.Content extra> {assignment.submission}</Card.Content>
         </Card>
       </Grid.Column>
     );
