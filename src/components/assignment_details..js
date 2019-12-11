@@ -88,11 +88,11 @@ class AssignmentDetails extends React.Component {
         <Card.Content>{submission.text}</Card.Content>
         <Card.Description>
           {submission.amazing_story}{" "}
-          <Icon name="star outline" color="yellow" size="large" onClick={() => this.vote("amazing_story", submission.mongoid)}/>
+          <Icon as="link" name="star outline" color="yellow" size="large" onClick={() => this.vote("amazing_story", submission.mongoid)}/>
           {submission.well_written}{" "}
-          <Icon name="handshake outline" color="blue" size="large"  onClick={() => this.vote("well_written", submission.mongoid)}/>
+          <Icon as="link" name="handshake outline" color="blue" size="large"  onClick={() => this.vote("well_written", submission.mongoid)}/>
           {submission.hilarious}{" "}
-          <Icon name="hand peace outline" color="purple" size="large"  onClick={() => this.vote("hilarious", submission.mongoid)}/>
+          <Icon as="link" name="hand peace outline" color="purple" size="large"  onClick={() => this.vote("hilarious", submission.mongoid)}/>
         </Card.Description>
         <Card.Description></Card.Description>
         <Card.Meta></Card.Meta>
