@@ -1,7 +1,7 @@
 import React from "react";
 import Axios from "axios";
 
-import { Form, Label, Input, Message } from "semantic-ui-react";
+import { Form, Label, Message } from "semantic-ui-react";
 
 class Login extends React.Component {
   state = { error:false, email: "", password: "", submittedName: "", submittedEmail: "" };
@@ -27,7 +27,7 @@ class Login extends React.Component {
             email: email,
             password: password,
         },
-        url: "192.168.123.5:8000" + "/user/login",
+        url: "127.0.0.1:8000" + "/user/login",
         withCredentials: true
     })
   }
@@ -46,9 +46,7 @@ class Login extends React.Component {
         </Form.Field>
         <Message error> incorrect password</Message>
         <Form.Button type="submit"> login</Form.Button>
-
           </Form.Group>
-
       </Form>
     );
   }
