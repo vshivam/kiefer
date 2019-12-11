@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import Axios from "axios";
-
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import {
   Grid,
   Label,
@@ -17,9 +17,8 @@ import {
   Container,
   Card
 } from "semantic-ui-react";
+import { withRouter } from "react-router";
 
-
-import {Link } from "react-router-dom"
 
 class Dashboard extends React.Component {
   state = {
@@ -27,17 +26,17 @@ class Dashboard extends React.Component {
       {
         header: "Write about your trip to England",
         keyword: "afrikanische",
-        deadline: "123",
+        deadline: "123"
       }
     ]
   };
 
   componentDidMount = () => {
     this.getActiveAssignmentsRequest().then(result => {
-      // header, mongoid, keyword, created, deadline, submission 
+      // header, mongoid, keyword, created, deadline, submission
       this.setState({
         assignments: result.data.assignments
-      })
+      });
     });
   };
 
@@ -85,9 +84,12 @@ class Dashboard extends React.Component {
   renderAssignment = assignment => {
     return (
       <Grid.Column width={8}>
-        <Link to={{pathname: "/assignment_details", aboutProps: {
-          assignment: assignment
-        }}}>
+        <Link
+          to={{
+            pathname: "/assignment_details",
+            assignment: assignment
+          }}
+        >
           <Card style={{ marginTop: "16px" }}>
             <Card.Content>
               <Card.Header>{assignment.header}</Card.Header>
@@ -181,4 +183,5 @@ class Dashboard extends React.Component {
   };
 }
 
+Dashboard = withRouter(Dashboard)
 export default Dashboard;
