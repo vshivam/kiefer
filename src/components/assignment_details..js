@@ -81,7 +81,7 @@ class AssignmentDetails extends React.Component {
 
   renderFriendSubmission = submission => {
     return (
-      <Card>
+      <Card fluid>
         <Card.Content>{submission.text}</Card.Content>
         <Card.Description>
           {submission.amazing_story} <Icon name="star outline" color="yellow" size="large" />
@@ -89,7 +89,6 @@ class AssignmentDetails extends React.Component {
           {submission.hilarious} <Icon name="hand peace outline" color="purple" size="large" />
         </Card.Description>
         <Card.Description>
-
         </Card.Description>
         <Card.Meta></Card.Meta>
       </Card>
@@ -98,7 +97,7 @@ class AssignmentDetails extends React.Component {
 
   renderFriendSubmissions = (submissions) => {
     return submissions.map(s => {
-        this.renderFriendSubmission(s);
+        return this.renderFriendSubmission(s);
     })
   }
 
