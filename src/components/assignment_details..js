@@ -23,7 +23,8 @@ import {
 class AssignmentDetails extends React.Component {
   state = {
     submissionSuccessful: false,
-    submissions: []
+    submissions: [],
+    alreadySubmitted: false
   };
 
   componentDidMount = () => {
@@ -72,30 +73,60 @@ class AssignmentDetails extends React.Component {
   getAllSubmissions = () => {
     this.getAllPostsRequest().then(result => {
       if (result.data.success) {
-          console.log(result.data.posts)
+        console.log(result.data.posts);
         this.setState({ submissions: result.data.posts });
       }
     });
   };
 
+  renderFriendSubmission = submission => {
+    return (
+      <Card>
+        <Card.Content>{submission.text}</Card.Content>
+        <Card.Description>
+          {submission.amazing_story} <Icon name="star outline" color="yellow" size="large" />
+          {submission.well_written} <Icon name="handshake outline" color="blue" size="large" />
+          {submission.hilarious} <Icon name="hand peace outline" color="purple" size="large" />
+        </Card.Description>
+        <Card.Description>
+
+        </Card.Description>
+        <Card.Meta></Card.Meta>
+      </Card>
+    );
+  };
+
+  renderFriendSubmissions = (submissions) => {
+    return submissions.map(s => {
+        this.renderFriendSubmission(s);
+    })
+  }
+
+  renderSubmissionForm = () => {
+    return this.state.submissionSuccessful ? (
+        <Message success> Well done!</Message>
+      ) : (
+        <Form onSubmit={this.onCreateSubmission}>
+          <Header>{this.props.location.assignment.header}</Header>
+          <Form.Field>
+            <label>Give it your best shot!</label>
+            <TextArea name="submission_text" onChange={this.onFormChange} />
+          </Form.Field>
+          <Message>
+            Don't forget to include these words for extra points ;)
+            <b>{this.props.location.assignment.keyword}</b>
+          </Message>
+          <Form.Button type="submit"> Submit</Form.Button>
+        </Form>
+      );
+  }
+
   render = () => {
     console.log(this.props.location);
-    return this.state.submissionSuccessful ? (
-      <Message success> Well done!</Message>
-    ) : (
-      <Form onSubmit={this.onCreateSubmission}>
-        <Header>{this.props.location.assignment.header}</Header>
-        <Form.Field>
-          <label>Give it your best shot!</label>
-          <TextArea name="submission_text" onChange={this.onFormChange} />
-        </Form.Field>
-        <Message>
-          Don't forget to include these words for extra points ;)
-          <b>{this.props.location.assignment.keyword}</b>
-        </Message>
-        <Form.Button type="submit"> Submit</Form.Button>
-      </Form>
-    );
+    return <Fragment>
+        {this.renderSubmissionForm()}
+        {this.renderFriendSubmissions(this.state.submissions)}
+    </Fragment>
   };
 }
 
