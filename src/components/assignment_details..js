@@ -30,7 +30,7 @@ class AssignmentDetails extends React.Component {
       {
         text:
           "yoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyo",
-          comments: []
+        comments: []
       }
     ],
     alreadySubmitted: true
@@ -125,11 +125,11 @@ class AssignmentDetails extends React.Component {
     );
   };
 
-  renderComment(comment) {
+  renderComment(comment, name) {
     return (
       <Fragment>
         <Header as="h3" dividing>
-          How did Kiwi do ?
+          How did {name} do ?
         </Header>
         <Comment>
           <Comment.Avatar src="https://react.semantic-ui.com/images/avatar/small/matt.jpg" />
@@ -144,22 +144,13 @@ class AssignmentDetails extends React.Component {
             </Comment.Actions>
           </Comment.Content>
         </Comment>
-        <Form reply>
-          <Form.TextArea placeholder="Encourage Kiwi! Some grammar tips, perhaps ?" />
-          <Button
-            content="Add Reply"
-            labelPosition="left"
-            icon="edit"
-            primary
-          />
-        </Form>
       </Fragment>
     );
   }
 
-  renderComments = comments => {
+  renderComments = (comments, name) => {
     comments.map(comment => {
-      this.renderComment(comment);
+      this.renderComment(comment, name);
     });
   };
 
@@ -169,7 +160,7 @@ class AssignmentDetails extends React.Component {
         <Grid padded relaxed>
           <Grid.Row>
             <Grid.Column width="12">
-              <Header>Kiwi writes</Header>
+              <Header>{submission.name} writes</Header>
             </Grid.Column>
             <Grid.Column width="4">
               {this.renderVoteMenu(submission)}
@@ -181,7 +172,16 @@ class AssignmentDetails extends React.Component {
           <Grid.Row>
             <Grid.Column>
               <Comment.Group minimal size="mini">
-                {this.renderComments(submission.comments)}
+                {this.renderComments(submission.comments, submission.name)}
+                <Form reply>
+                  <Form.TextArea placeholder="Encourage Kiwi! Some grammar tips, perhaps ?" />
+                  <Button
+                    content="Add Reply"
+                    labelPosition="left"
+                    icon="edit"
+                    primary
+                  />
+                </Form>
               </Comment.Group>
             </Grid.Column>
           </Grid.Row>
