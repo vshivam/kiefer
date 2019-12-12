@@ -28,9 +28,12 @@ class AssignmentDetails extends React.Component {
     submissionSuccessful: false,
     submissions: [
       {
+        'mongoid': "1234",
+        name: "Wiwi",
         text:
           "yoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyo",
-        comments: []
+        comments: [],
+        new_comment_text: ""
       }
     ],
     alreadySubmitted: true
@@ -154,7 +157,32 @@ class AssignmentDetails extends React.Component {
     });
   };
 
+  onNewCommentSubmit = submission_id => {
+    this.getNewCommentRequest(submission_id, this.state.new_comment_text).then(
+      result => {
+        if (result.data.success) {
+         
+        }
+      }
+    );
+  };
+
+  getNewCommentRequest = (submission_id, text) => {
+    return Axios({
+      method: "post",
+      url: "http://127.0.0.1:8000" + "/user/add_comment",
+      params: {
+        submission_id: submission_id,
+        comment: text
+      },
+      withCredentials: true
+    });
+  };
+
   renderFriendSubmission = submission => {
+    let getplaceholder = () => {
+      return "Encourage " + submission.name + " ! Some grammar tips, perhaps ?";
+    };
     return (
       <Segment color="teal">
         <Grid padded relaxed>
@@ -173,11 +201,18 @@ class AssignmentDetails extends React.Component {
             <Grid.Column>
               <Comment.Group minimal size="mini">
                 {this.renderComments(submission.comments, submission.name)}
-                <Form reply>
-                  <Form.TextArea placeholder="Encourage Kiwi! Some grammar tips, perhaps ?" />
+                <Form
+                  reply
+                  onSubmit={() => this.onNewCommentSubmit(submission.mongoid)}
+                >
+                  <Form.TextArea
+                    name="new_comment_text"
+                    onChange={this.onCommentFormChange}
+                    placeholder={getplaceholder()}
+                  />
                   <Button
-                    content="Add Reply"
-                    labelPosition="left"
+                    content="comment"
+                    labelPosition="right"
                     icon="edit"
                     primary
                   />
@@ -200,6 +235,9 @@ class AssignmentDetails extends React.Component {
       </Fragment>
     );
   };
+
+  onCommentFormChange = (e, { name, value }) =>
+    this.setState({ [name]: value });
 
   renderSubmissionForm = () => {
     return this.state.submissionSuccessful || this.state.alreadySubmitted ? (
