@@ -19,7 +19,7 @@ class Login extends React.Component {
     const { email, password } = this.state;
     this.getLoginUserRequest(email, password).then(result => {
       if (result.data.success) {
-        this.props.history.push(`/dashboard`, { user: result.data.user });
+        this.props.history.push({pathname: `/dashboard`, user: result.data.user });
       } else {
         this.setState({ error: true });
       }
