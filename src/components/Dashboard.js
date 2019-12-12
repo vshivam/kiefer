@@ -4,17 +4,12 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import {
   Grid,
   Label,
-  Message,
-  Table,
-  Tab,
+  Menu,
   Icon,
-  Divider,
   Form,
   TextArea,
   Header,
   Popup,
-  Button,
-  Container,
   Card
 } from "semantic-ui-react";
 import { withRouter } from "react-router";
@@ -87,7 +82,8 @@ class Dashboard extends React.Component {
         <Link
           to={{
             pathname: "/assignment_details",
-            assignment: assignment
+            assignment: assignment, 
+            user: this.props.location.user
           }}
         >
           <Card style={{ marginTop: "16px" }} className="grow" color="yellow">
@@ -111,62 +107,94 @@ class Dashboard extends React.Component {
     return assignments.map(assignment => this.renderAssignment(assignment));
   };
 
-  renderNewAssignmentForm = () => {};
+  renderNewAssignmentForm = () => {
+    return (
+      <Grid.Column width={4}>
+        <Popup
+          on="click"
+          trigger={
+            <Card style={{ marginTop: "16px" }} color="green">
+              <Card.Content>
+                <Card.Header> Create new assignment</Card.Header>
+              </Card.Content>
+              <Card.Content>
+                <Icon name="plus"> </Icon>
+              </Card.Content>
+            </Card>
+          }
+          content={
+            <Form onSubmit={this.createNewAssignment}>
+              <Header> Create a new assignment</Header>
+              <Form.Field>
+                <label>what should the students write about ?</label>
+                <TextArea
+                  name="assignment_header"
+                  onChange={this.onNewAssignmentFormChange}
+                />
+              </Form.Field>
+              <Form.Group>
+                <Form.Field>
+                  <label>give students new words to learn!</label>
+                  <Form.Input
+                    name="assignment_keywords"
+                    onChange={this.onNewAssignmentFormChange}
+                  ></Form.Input>
+                </Form.Field>
+                <Form.Field>
+                  <label> days to submission</label>
+                  <Form.Input
+                    name="assignment_days"
+                    onChange={this.onNewAssignmentFormChange}
+                  ></Form.Input>
+                </Form.Field>
+              </Form.Group>
+              <Form.Field>
+                <Form.Button type="submit">Create assignment</Form.Button>
+              </Form.Field>
+            </Form>
+          }
+        ></Popup>
+      </Grid.Column>
+    );
+  };
 
   render = () => {
+    console.log(typeof this.props.location.user);
     return (
       <Fragment>
-        {this.renderNewAssignmentForm()}
-        <Divider />
+              <Menu>
+        <Link to="/">
+          <Menu.Item header> SprachCafe</Menu.Item>
+        </Link>
+        <Menu.Menu position="right">
+          <Menu.Item>
+            <Icon name="star outline" color="yellow" size="large" />{" "}
+            <Label color="grey">1</Label>
+          </Menu.Item>
+          <Menu.Item>
+            <Icon name="handshake outline" color="blue" size="large" />{" "}
+            <Label color="grey">3</Label>
+          </Menu.Item>
+          <Menu.Item>
+            <Icon name="hand peace outline" color="purple" size="large" />{" "}
+            <Label color="grey">1</Label>
+          </Menu.Item>
+          <Menu.Item>
+            <Icon name="graduation cap" color="yellow" size="large" /> 
+            <Label color="yellow">1</Label>
+          </Menu.Item>
+          <Menu.Item>
+            <Icon name="heart outline" color="olive" size="large" /> 
+            <Label color="yellow">1</Label>
+          </Menu.Item>
+        </Menu.Menu>
+      </Menu>
         <Grid padded relaxed>
           <Grid.Row>
-            <Grid.Column width={4}>
-              <Popup
-                on="click"
-                trigger={
-                  <Card style={{ marginTop: "16px" }} color="green">
-                    <Card.Content>
-                      <Card.Header> Create new assignment</Card.Header>
-                    </Card.Content>
-                    <Card.Content>
-                      <Icon name="plus"> </Icon>
-                    </Card.Content>
-                  </Card>
-                }
-                content={
-                  <Form onSubmit={this.createNewAssignment}>
-                    <Header> Create a new assignment</Header>
-                    <Form.Field>
-                      <label>what should the students write about ?</label>
-                      <TextArea
-                        name="assignment_header"
-                        onChange={this.onNewAssignmentFormChange}
-                      />
-                    </Form.Field>
-                    <Form.Group>
-                      <Form.Field>
-                        <label>give students new words to learn!</label>
-                        <Form.Input
-                          name="assignment_keywords"
-                          onChange={this.onNewAssignmentFormChange}
-                        ></Form.Input>
-                      </Form.Field>
-                      <Form.Field>
-                        <label> days to submission</label>
-                        <Form.Input
-                          name="assignment_days"
-                          onChange={this.onNewAssignmentFormChange}
-                        ></Form.Input>
-                      </Form.Field>
-                    </Form.Group>
-                    <Form.Field>
-                      <Form.Button type="submit">Create assignment</Form.Button>
-
-                      </Form.Field>
-                  </Form>
-                }
-              ></Popup>
-            </Grid.Column>
+            {typeof this.props.location.user !== "undefined" &&
+            this.props.location.user.role === "teacher"
+              ? this.renderNewAssignmentForm()
+              : null}
             {this.renderAssignments(this.state.assignments)}
           </Grid.Row>
         </Grid>

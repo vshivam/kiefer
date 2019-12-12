@@ -20,7 +20,8 @@ import {
   Card,
   Comment,
   Segment,
-  Grid
+  Grid,
+  Label
 } from "semantic-ui-react";
 
 class AssignmentDetails extends React.Component {
@@ -28,7 +29,7 @@ class AssignmentDetails extends React.Component {
     submissionSuccessful: false,
     submissions: [
       {
-        'mongoid': "1234",
+        mongoid: "1234",
         name: "Wiwi",
         text:
           "yoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyo",
@@ -96,7 +97,7 @@ class AssignmentDetails extends React.Component {
 
   renderVoteMenu = submission => {
     return (
-      <Menu compact icon borderless floated="right">
+      <Menu compact icon floated="right">
         <Menu.Item>
           <Icon
             name="star outline"
@@ -104,7 +105,7 @@ class AssignmentDetails extends React.Component {
             size="large"
             onClick={() => this.vote("amazing_story", submission.mongoid)}
           />
-          {submission.amazing_story}
+          <Label color="grey">{submission.amazing_story}</Label>
         </Menu.Item>
         <Menu.Item>
           <Icon
@@ -113,7 +114,7 @@ class AssignmentDetails extends React.Component {
             size="large"
             onClick={() => this.vote("well_written", submission.mongoid)}
           />
-          {submission.well_written}
+          <Label color="grey">{submission.well_written}</Label>
         </Menu.Item>
         <Menu.Item>
           <Icon
@@ -122,8 +123,21 @@ class AssignmentDetails extends React.Component {
             size="large"
             onClick={() => this.vote("hilarious", submission.mongoid)}
           />
-          {submission.hilarious}
+          <Label color="grey">{submission.hilarious}</Label>
         </Menu.Item>
+        {typeof this.props.location.user !== "undefined" &&
+        this.props.location.user.role === "teacher" ? (
+          <Fragment>
+            <Menu.Item>
+              <Icon name="graduation cap" color="yellow" size="large" />
+              <Label color="yellow">1</Label>
+            </Menu.Item>
+            <Menu.Item>
+              <Icon name="heart outline" color="olive" size="large" />
+              <Label color="yellow">1</Label>
+            </Menu.Item>{" "}
+          </Fragment>
+        ) : null}
       </Menu>
     );
   };
@@ -161,7 +175,6 @@ class AssignmentDetails extends React.Component {
     this.getNewCommentRequest(submission_id, this.state.new_comment_text).then(
       result => {
         if (result.data.success) {
-         
         }
       }
     );
@@ -287,6 +300,33 @@ class AssignmentDetails extends React.Component {
     console.log(this.props.location);
     return (
       <Fragment>
+              <Menu>
+        <Link to="/">
+          <Menu.Item header> SprachCafe</Menu.Item>
+        </Link>
+        <Menu.Menu position="right">
+          <Menu.Item>
+            <Icon name="star outline" color="yellow" size="large" />{" "}
+            <Label color="grey">1</Label>
+          </Menu.Item>
+          <Menu.Item>
+            <Icon name="handshake outline" color="blue" size="large" />{" "}
+            <Label color="grey">3</Label>
+          </Menu.Item>
+          <Menu.Item>
+            <Icon name="hand peace outline" color="purple" size="large" />{" "}
+            <Label color="grey">1</Label>
+          </Menu.Item>
+          <Menu.Item>
+            <Icon name="graduation cap" color="yellow" size="large" /> 
+            <Label color="yellow">1</Label>
+          </Menu.Item>
+          <Menu.Item>
+            <Icon name="heart outline" color="olive" size="large" /> 
+            <Label color="yellow">1</Label>
+          </Menu.Item>
+        </Menu.Menu>
+      </Menu>
         {this.renderSubmissionForm()}
         {this.renderFriendSubmissions(this.state.submissions)}
       </Fragment>

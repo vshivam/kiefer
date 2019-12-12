@@ -1,7 +1,7 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Axios from "axios";
 
-import { Form, Label, Message, Grid } from "semantic-ui-react";
+import { Form, Label, Message, Grid, Menu } from "semantic-ui-react";
 import { withRouter } from "react-router";
 
 class Login extends React.Component {
@@ -40,32 +40,37 @@ class Login extends React.Component {
 
   render() {
     return (
-      <Grid centered padded>
-        <Form
-          error={this.state.error}
-          onSubmit={this.handleSubmit}
-          style={{ width: "360px" }}
-        >
-          <Form.Field>
-            <label> email address</label>
-            <Form.Input
-              onChange={this.handleChange}
-              name="email"
-              placeholder="email address"
-            />
-          </Form.Field>
-          <Form.Field>
-            <label> password</label>
-            <Form.Input
-              onChange={this.handleChange}
-              name="password"
-              placeholder="password"
-            />
-          </Form.Field>
-          <Message error> incorrect password</Message>
-          <Form.Button type="submit"> login</Form.Button>
-        </Form>
-      </Grid>
+      <Fragment>
+        <Menu>
+          <Menu.Item header> SprachCafe</Menu.Item>
+        </Menu>
+        <Grid centered padded>
+          <Form
+            error={this.state.error}
+            onSubmit={this.handleSubmit}
+            style={{ width: "360px" }}
+          >
+            <Form.Field>
+              <label> email address</label>
+              <Form.Input
+                onChange={this.handleChange}
+                name="email"
+                placeholder="email address"
+              />
+            </Form.Field>
+            <Form.Field>
+              <label> password</label>
+              <Form.Input
+                onChange={this.handleChange}
+                name="password"
+                placeholder="password"
+              />
+            </Form.Field>
+            <Message error> incorrect password</Message>
+            <Form.Button type="submit"> login</Form.Button>
+          </Form>
+        </Grid>
+      </Fragment>
     );
   }
 }
