@@ -26,7 +26,13 @@ import {
 class AssignmentDetails extends React.Component {
   state = {
     submissionSuccessful: false,
-    submissions: [{ text: "yoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyo" }],
+    submissions: [
+      {
+        text:
+          "yoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyo",
+          comments: []
+      }
+    ],
     alreadySubmitted: true
   };
 
@@ -119,52 +125,67 @@ class AssignmentDetails extends React.Component {
     );
   };
 
+  renderComment(comment) {
+    return (
+      <Fragment>
+        <Header as="h3" dividing>
+          How did Kiwi do ?
+        </Header>
+        <Comment>
+          <Comment.Avatar src="https://react.semantic-ui.com/images/avatar/small/matt.jpg" />
+          <Comment.Content>
+            <Comment.Author as="a">{comment.name}</Comment.Author>
+            <Comment.Metadata>
+              <div>Today at 5:42PM</div>
+            </Comment.Metadata>
+            <Comment.Text>{comment.comment}</Comment.Text>
+            <Comment.Actions>
+              <Comment.Action>Reply</Comment.Action>
+            </Comment.Actions>
+          </Comment.Content>
+        </Comment>
+        <Form reply>
+          <Form.TextArea placeholder="Encourage Kiwi! Some grammar tips, perhaps ?" />
+          <Button
+            content="Add Reply"
+            labelPosition="left"
+            icon="edit"
+            primary
+          />
+        </Form>
+      </Fragment>
+    );
+  }
+
+  renderComments = comments => {
+    comments.map(comment => {
+      this.renderComment(comment);
+    });
+  };
+
   renderFriendSubmission = submission => {
     return (
       <Segment color="teal">
         <Grid padded relaxed>
           <Grid.Row>
-            <Grid.Column width="12"><Header>Kiwi writes</Header></Grid.Column>
-            <Grid.Column width="4">{this.renderVoteMenu(submission)}</Grid.Column>
+            <Grid.Column width="12">
+              <Header>Kiwi writes</Header>
+            </Grid.Column>
+            <Grid.Column width="4">
+              {this.renderVoteMenu(submission)}
+            </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-              <Grid.Column>
-              {submission.text}
-              </Grid.Column>
+            <Grid.Column>{submission.text}</Grid.Column>
           </Grid.Row>
-          <Grid.Row >
+          <Grid.Row>
             <Grid.Column>
-            <Comment.Group minimal size="mini" threaded>
-          <Header as="h3" dividing>
-            How did Kiwi do ?
-          </Header>
-          <Comment>
-            <Comment.Avatar src="https://react.semantic-ui.com/images/avatar/small/matt.jpg" />
-            <Comment.Content>
-              <Comment.Author as="a">Matt</Comment.Author>
-              <Comment.Metadata>
-                <div>Today at 5:42PM</div>
-              </Comment.Metadata>
-              <Comment.Text>How artistic!</Comment.Text>
-              <Comment.Actions>
-                <Comment.Action>Reply</Comment.Action>
-              </Comment.Actions>
-            </Comment.Content>
-          </Comment>
-          <Form reply>
-            <Form.TextArea placeholder="Encourage Kiwi! Some grammar tips, perhaps ?" />
-            <Button
-              content="Add Reply"
-              labelPosition="left"
-              icon="edit"
-              primary
-            />
-          </Form>
-        </Comment.Group>
+              <Comment.Group minimal size="mini">
+                {this.renderComments(submission.comments)}
+              </Comment.Group>
             </Grid.Column>
           </Grid.Row>
         </Grid>
-    
       </Segment>
     );
   };
@@ -197,7 +218,7 @@ class AssignmentDetails extends React.Component {
         </Form.Field>
         <Message>
           Don't forget to include these words for extra points ;)
-          <b>{this.props.location.assignment.keyword.join(', ')}</b>
+          <b>{this.props.location.assignment.keyword.join(", ")}</b>
         </Message>
         <Form.Button type="submit"> Submit</Form.Button>
       </Form>
@@ -215,7 +236,7 @@ class AssignmentDetails extends React.Component {
   getVoteRequest = (type, post_id) => {
     let params = {};
     params[type] = true;
-    params[post_id] = post_id;
+    params["post_id"] = post_id;
     return Axios({
       method: "get",
       url: "http://127.0.0.1:8000" + "/user/reaction",
