@@ -18,7 +18,7 @@ import {
   Card
 } from "semantic-ui-react";
 import { withRouter } from "react-router";
-
+import "./dashboard.css";
 
 class Dashboard extends React.Component {
   state = {
@@ -83,14 +83,14 @@ class Dashboard extends React.Component {
 
   renderAssignment = assignment => {
     return (
-      <Grid.Column width={8}>
+      <Grid.Column width={4}>
         <Link
           to={{
             pathname: "/assignment_details",
             assignment: assignment
           }}
         >
-          <Card style={{ marginTop: "16px" }}>
+          <Card style={{ marginTop: "16px" }} className="grow" color="yellow">
             <Card.Content>
               <Card.Header>{assignment.header}</Card.Header>
             </Card.Content>
@@ -99,8 +99,8 @@ class Dashboard extends React.Component {
               2 <Icon name="handshake outline" color="blue" size="large" />
               1 <Icon name="hand peace outline" color="purple" size="large" />
             </Card.Content>
+            <Card.Content extra> {assignment.keywords}</Card.Content>
             <Card.Content extra> {assignment.deadline}</Card.Content>
-            <Card.Content extra> {assignment.submission}</Card.Content>
           </Card>
         </Link>
       </Grid.Column>
@@ -111,77 +111,69 @@ class Dashboard extends React.Component {
     return assignments.map(assignment => this.renderAssignment(assignment));
   };
 
-  renderNewAssignmentForm = () => {
-    return (
-      <Popup
-        on="click"
-        trigger={
-          <Button floated="right" icon labelPosition="right">
-            {" "}
-            <Icon name="plus"></Icon> new assignment
-          </Button>
-        }
-        content={
-          <Form onSubmit={this.createNewAssignment}>
-            <Header> Createw new assignment</Header>
-            <Form.Field>
-              <label>what should the students write about ?</label>
-              <TextArea
-                name="assignment_header"
-                onChange={this.onNewAssignmentFormChange}
-              />
-            </Form.Field>
-            <Form.Group>
-              <Form.Field>
-                <label>give students new words to learn!</label>
-                <Form.Input
-                  name="assignment_keywords"
-                  onChange={this.onNewAssignmentFormChange}
-                ></Form.Input>
-              </Form.Field>
-              <Form.Field>
-                <label> days to submission</label>
-                <Form.Input
-                  name="assignment_days"
-                  onChange={this.onNewAssignmentFormChange}
-                ></Form.Input>
-              </Form.Field>
-              <Form.Button type="submit">Create assignment</Form.Button>
-            </Form.Group>
-          </Form>
-        }
-      ></Popup>
-    );
-  };
+  renderNewAssignmentForm = () => {};
 
   render = () => {
     return (
       <Fragment>
         {this.renderNewAssignmentForm()}
-        <Grid>
-          <Grid.Row>
-            <Grid.Column width={10} textAlign="right">
-              Awards 13 <Icon name="star outline" color="yellow" size="large" />
-              13 <Icon name="handshake outline" color="blue" size="large" />
-              13 <Icon name="hand peace outline" color="purple" size="large" />
-            </Grid.Column>
-            <Grid.Column width={6}>
-              Trophies 13{" "}
-              <Icon name="graduation cap" color="yellow" size="large" />
-              13 <Icon name="heart outline" color="olive" size="large" />
-            </Grid.Column>
-            <Grid.Column></Grid.Column>
-          </Grid.Row>
-        </Grid>
-
         <Divider />
         <Grid padded relaxed>
-          <Grid.Row>{this.renderAssignments(this.state.assignments)}</Grid.Row>
+          <Grid.Row>
+            <Grid.Column width={4}>
+              <Popup
+                on="click"
+                trigger={
+                  <Card style={{ marginTop: "16px" }} color="green">
+                    <Card.Content>
+                      <Card.Header> Create new assignment</Card.Header>
+                    </Card.Content>
+                    <Card.Content>
+                      <Icon name="plus"> </Icon>
+                    </Card.Content>
+                  </Card>
+                }
+                content={
+                  <Form onSubmit={this.createNewAssignment}>
+                    <Header> Create a new assignment</Header>
+                    <Form.Field>
+                      <label>what should the students write about ?</label>
+                      <TextArea
+                        name="assignment_header"
+                        onChange={this.onNewAssignmentFormChange}
+                      />
+                    </Form.Field>
+                    <Form.Group>
+                      <Form.Field>
+                        <label>give students new words to learn!</label>
+                        <Form.Input
+                          name="assignment_keywords"
+                          onChange={this.onNewAssignmentFormChange}
+                        ></Form.Input>
+                      </Form.Field>
+                      <Form.Field>
+                        <label> days to submission</label>
+                        <Form.Input
+                          name="assignment_days"
+                          onChange={this.onNewAssignmentFormChange}
+                        ></Form.Input>
+                      </Form.Field>
+                    </Form.Group>
+                    <Form.Field>
+                      <Form.Button type="submit">Create assignment</Form.Button>
+
+                      </Form.Field>
+                  </Form>
+                }
+              ></Popup>
+            </Grid.Column>
+            {this.renderAssignments(this.state.assignments)}
+          </Grid.Row>
         </Grid>
       </Fragment>
     );
   };
 }
 
-Dashboard = withRouter(Dashboard)
+Dashboard = withRouter(Dashboard);
 export default Dashboard;

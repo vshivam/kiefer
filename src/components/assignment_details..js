@@ -5,8 +5,8 @@ import { withRouter } from "react-router";
 
 import {
   Message,
-  Grid,
-  Label,
+  Menu,
+  Image,
   Table,
   Tab,
   Icon,
@@ -17,13 +17,16 @@ import {
   Popup,
   Button,
   Container,
-  Card
+  Card,
+  Comment,
+  Segment,
+  Grid
 } from "semantic-ui-react";
 
 class AssignmentDetails extends React.Component {
   state = {
     submissionSuccessful: false,
-    submissions: [{ text: "yo" }],
+    submissions: [{ text: "yoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyoyo" }],
     alreadySubmitted: true
   };
 
@@ -82,28 +85,94 @@ class AssignmentDetails extends React.Component {
     });
   };
 
+  renderVoteMenu = submission => {
+    return (
+      <Menu compact icon borderless floated="right">
+        <Menu.Item>
+          <Icon
+            name="star outline"
+            color="yellow"
+            size="large"
+            onClick={() => this.vote("amazing_story", submission.mongoid)}
+          />
+          {submission.amazing_story}
+        </Menu.Item>
+        <Menu.Item>
+          <Icon
+            name="handshake outline"
+            color="blue"
+            size="large"
+            onClick={() => this.vote("well_written", submission.mongoid)}
+          />
+          {submission.well_written}
+        </Menu.Item>
+        <Menu.Item>
+          <Icon
+            name="hand peace outline"
+            color="purple"
+            size="large"
+            onClick={() => this.vote("hilarious", submission.mongoid)}
+          />
+          {submission.hilarious}
+        </Menu.Item>
+      </Menu>
+    );
+  };
+
   renderFriendSubmission = submission => {
     return (
-      <Card fluid>
-        <Card.Content>{submission.text}</Card.Content>
-        <Card.Description>
-          {submission.amazing_story}{" "}
-          <Icon as="link" name="star outline" color="yellow" size="large" onClick={() => this.vote("amazing_story", submission.mongoid)}/>
-          {submission.well_written}{" "}
-          <Icon as="link" name="handshake outline" color="blue" size="large"  onClick={() => this.vote("well_written", submission.mongoid)}/>
-          {submission.hilarious}{" "}
-          <Icon as="link" name="hand peace outline" color="purple" size="large"  onClick={() => this.vote("hilarious", submission.mongoid)}/>
-        </Card.Description>
-        <Card.Description></Card.Description>
-        <Card.Meta></Card.Meta>
-      </Card>
+      <Segment color="teal">
+        <Grid padded relaxed>
+          <Grid.Row>
+            <Grid.Column width="12"><Header>Kiwi writes</Header></Grid.Column>
+            <Grid.Column width="4">{this.renderVoteMenu(submission)}</Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+              <Grid.Column>
+              {submission.text}
+              </Grid.Column>
+          </Grid.Row>
+          <Grid.Row >
+            <Grid.Column>
+            <Comment.Group minimal size="mini" threaded>
+          <Header as="h3" dividing>
+            How did Kiwi do ?
+          </Header>
+          <Comment>
+            <Comment.Avatar src="https://react.semantic-ui.com/images/avatar/small/matt.jpg" />
+            <Comment.Content>
+              <Comment.Author as="a">Matt</Comment.Author>
+              <Comment.Metadata>
+                <div>Today at 5:42PM</div>
+              </Comment.Metadata>
+              <Comment.Text>How artistic!</Comment.Text>
+              <Comment.Actions>
+                <Comment.Action>Reply</Comment.Action>
+              </Comment.Actions>
+            </Comment.Content>
+          </Comment>
+          <Form reply>
+            <Form.TextArea placeholder="Encourage Kiwi! Some grammar tips, perhaps ?" />
+            <Button
+              content="Add Reply"
+              labelPosition="left"
+              icon="edit"
+              primary
+            />
+          </Form>
+        </Comment.Group>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+    
+      </Segment>
     );
   };
 
   renderFriendSubmissions = submissions => {
     return (
       <Fragment>
-        <Header> Your classmates said:</Header>
+        <Header> Checkout your classmates' submissions</Header>
         {submissions.map(s => {
           return this.renderFriendSubmission(s);
         })}
@@ -113,10 +182,11 @@ class AssignmentDetails extends React.Component {
 
   renderSubmissionForm = () => {
     return this.state.submissionSuccessful || this.state.alreadySubmitted ? (
-      <Message success>
-        {" "}
-        Well done on finishing this assignment! Now check out posts from your
-        friends and see what else you can learn.
+      <Message success compact>
+        <Message.Header>
+          Well done on finishing this assignment!{" "}
+        </Message.Header>
+        Now check out posts from your friends and see what else you can learn.
       </Message>
     ) : (
       <Form onSubmit={this.onCreateSubmission}>
@@ -127,7 +197,7 @@ class AssignmentDetails extends React.Component {
         </Form.Field>
         <Message>
           Don't forget to include these words for extra points ;)
-          <b>{this.props.location.assignment.keyword}</b>
+          <b>{this.props.location.assignment.keyword.join(', ')}</b>
         </Message>
         <Form.Button type="submit"> Submit</Form.Button>
       </Form>
@@ -135,17 +205,17 @@ class AssignmentDetails extends React.Component {
   };
 
   vote = (type, post_id) => {
-      this.getVoteRequest(type, post_id).then(result => {
-          if(result.data.success){
-            this.getAllSubmissions();      
-          }
-      })
-  }
+    this.getVoteRequest(type, post_id).then(result => {
+      if (result.data.success) {
+        this.getAllSubmissions();
+      }
+    });
+  };
 
   getVoteRequest = (type, post_id) => {
-      let params = {}
-      params[type]= true
-      params[post_id] = post_id
+    let params = {};
+    params[type] = true;
+    params[post_id] = post_id;
     return Axios({
       method: "get",
       url: "http://127.0.0.1:8000" + "/user/reaction",
